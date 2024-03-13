@@ -1,0 +1,20 @@
+---
+- name: Deploy index.html and configure HTTP server
+  hosts: ec2_instances
+  become: yes
+  tasks:
+    - name: Copy index.html to the instances
+      copy:
+        src: index.html
+        dest: /var/www/html/index.html
+        mode: 0644
+    - name: Install httpd (Apache HTTP Server)
+      yum:
+        name: httpd
+        state: present
+    - name: Start httpd service
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
