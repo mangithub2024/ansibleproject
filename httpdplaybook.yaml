@@ -3,15 +3,10 @@
   hosts: ec2_instances
   become: yes
   vars:
-    ansible_ssh_common_args: '-o StrictHostKeyChecking=no'  
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
   tasks:
-    - name: Copy index.html to the instances
-      copy:
-        src: index.html
-        dest: /var/www/html/index.html
-        mode: 0644
     - name: Install httpd (Apache HTTP Server)
-      yum:
+      dnf:
         name: httpd
         state: present
     - name: Start httpd service
@@ -19,4 +14,8 @@
         name: httpd
         state: started
         enabled: yes
-
+    - name: Copy index.html to the instances
+      copy:
+        src: index.html
+        dest: /var/www/html/index.html
+        mode: 0644
